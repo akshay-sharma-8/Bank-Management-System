@@ -16,31 +16,37 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // *** THIS METHOD IS UPDATED ***
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<UserDTO>> getUserById(@PathVariable Long userId) {
         try {
             User user = userService.getUserById(userId);
-            return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", user));
+            UserDTO userDTO = userService.convertToDTO(user);
+            return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", userDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
+    // *** THIS METHOD IS UPDATED ***
     @GetMapping("/email/{email}")
-    public ResponseEntity<ApiResponse<User>> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<ApiResponse<UserDTO>> getUserByEmail(@PathVariable String email) {
         try {
             User user = userService.getUserByEmail(email);
-            return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", user));
+            UserDTO userDTO = userService.convertToDTO(user);
+            return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", userDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
+    // *** THIS METHOD IS UPDATED ***
     @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse<UserDTO>> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
         try {
             User updatedUser = userService.updateUser(userId, userDTO);
-            return ResponseEntity.ok(ApiResponse.success("User updated successfully", updatedUser));
+            UserDTO updatedUserDTO = userService.convertToDTO(updatedUser);
+            return ResponseEntity.ok(ApiResponse.success("User updated successfully", updatedUserDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

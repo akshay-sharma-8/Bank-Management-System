@@ -72,7 +72,8 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    private UserDTO convertToDTO(User user) {
+    // *** THIS IS THE CHANGE ***
+    public UserDTO convertToDTO(User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
         dto.setName(user.getName());

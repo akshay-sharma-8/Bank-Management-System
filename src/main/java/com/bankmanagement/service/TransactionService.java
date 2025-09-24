@@ -119,7 +119,8 @@ public class TransactionService {
         return "TXN" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10).toUpperCase();
     }
 
-    private TransactionDTO convertToDTO(Transaction transaction) {
+    // *** MUST BE PUBLIC ***
+    public TransactionDTO convertToDTO(Transaction transaction) {
         TransactionDTO dto = new TransactionDTO();
         dto.setId(transaction.getId());
         dto.setTransactionId(transaction.getTransactionId());

@@ -23,7 +23,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping("/deposit")
-    public ResponseEntity<ApiResponse<Transaction>> deposit(@RequestBody DepositWithdrawRequest request) {
+    public ResponseEntity<ApiResponse<TransactionDTO>> deposit(@RequestBody DepositWithdrawRequest request) {
         try {
             if (!ValidationUtil.isValidAmount(request.getAmount())) {
                 return ResponseEntity.badRequest().body(ApiResponse.error("Invalid amount"));
@@ -33,15 +33,16 @@ public class TransactionController {
                     request.getAccountNumber(),
                     request.getAmount(),
                     request.getDescription());
-
-            return ResponseEntity.ok(ApiResponse.success("Deposit successful", transaction));
+            
+            TransactionDTO transactionDTO = transactionService.convertToDTO(transaction);
+            return ResponseEntity.ok(ApiResponse.success("Deposit successful", transactionDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<ApiResponse<Transaction>> withdraw(@RequestBody DepositWithdrawRequest request) {
+    public ResponseEntity<ApiResponse<TransactionDTO>> withdraw(@RequestBody DepositWithdrawRequest request) {
         try {
             if (!ValidationUtil.isValidAmount(request.getAmount())) {
                 return ResponseEntity.badRequest().body(ApiResponse.error("Invalid amount"));
@@ -51,15 +52,16 @@ public class TransactionController {
                     request.getAccountNumber(),
                     request.getAmount(),
                     request.getDescription());
-
-            return ResponseEntity.ok(ApiResponse.success("Withdrawal successful", transaction));
+            
+            TransactionDTO transactionDTO = transactionService.convertToDTO(transaction);
+            return ResponseEntity.ok(ApiResponse.success("Withdrawal successful", transactionDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<ApiResponse<Transaction>> transfer(@RequestBody TransferRequest request) {
+    public ResponseEntity<ApiResponse<TransactionDTO>> transfer(@RequestBody TransferRequest request) {
         try {
             if (!ValidationUtil.isValidAmount(request.getAmount())) {
                 return ResponseEntity.badRequest().body(ApiResponse.error("Invalid amount"));
@@ -71,7 +73,8 @@ public class TransactionController {
                     request.getAmount(),
                     request.getDescription());
 
-            return ResponseEntity.ok(ApiResponse.success("Transfer successful", transaction));
+            TransactionDTO transactionDTO = transactionService.convertToDTO(transaction);
+            return ResponseEntity.ok(ApiResponse.success("Transfer successful", transactionDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

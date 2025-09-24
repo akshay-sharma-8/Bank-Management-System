@@ -63,7 +63,6 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    // New Delete Method
     public void deleteAccount(Long accountId) {
         Account account = getAccountById(accountId);
         accountRepository.delete(account);
@@ -77,7 +76,8 @@ public class AccountService {
         return accountNumber;
     }
 
-    private AccountDTO convertToDTO(Account account) {
+    // *** MUST BE PUBLIC ***
+    public AccountDTO convertToDTO(Account account) {
         AccountDTO dto = new AccountDTO();
         dto.setId(account.getId());
         dto.setAccountNumber(account.getAccountNumber());

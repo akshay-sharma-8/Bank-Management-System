@@ -28,6 +28,7 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    // *** THIS METHOD IS UPDATED ***
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<Map<String, Object>>> register(@RequestBody Map<String, String> request) {
         try {
@@ -36,7 +37,6 @@ public class AuthController {
             String password = request.get("password");
             String phone = request.get("phone");
 
-            // Validation
             if (!ValidationUtil.isNotEmpty(name) || !ValidationUtil.isValidEmail(email) ||
                     !ValidationUtil.isValidPassword(password) || !ValidationUtil.isValidPhone(phone)) {
                 return ResponseEntity.badRequest().body(ApiResponse.error("Invalid input data"));
@@ -52,8 +52,11 @@ public class AuthController {
             User user = userService.createUser(userDTO, password);
             String token = jwtUtil.generateToken(email, "USER");
 
+            // Convert the new user to a DTO for the response
+            UserDTO userDTOForResponse = userService.convertToDTO(user);
+
             Map<String, Object> response = new HashMap<>();
-            response.put("user", user);
+            response.put("user", userDTOForResponse); // Put the DTO in the response
             response.put("token", token);
 
             return ResponseEntity.ok(ApiResponse.success("User registered successfully", response));

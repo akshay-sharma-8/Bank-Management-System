@@ -20,30 +20,33 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<Account>> createAccount(@RequestBody CreateAccountRequest request) {
+    public ResponseEntity<ApiResponse<AccountDTO>> createAccount(@RequestBody CreateAccountRequest request) {
         try {
             Account account = accountService.createAccount(request.getUserId(), request.getAccountType());
-            return ResponseEntity.ok(ApiResponse.success("Account created successfully", account));
+            AccountDTO accountDTO = accountService.convertToDTO(account); 
+            return ResponseEntity.ok(ApiResponse.success("Account created successfully", accountDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<ApiResponse<Account>> getAccountById(@PathVariable Long accountId) {
+    public ResponseEntity<ApiResponse<AccountDTO>> getAccountById(@PathVariable Long accountId) {
         try {
             Account account = accountService.getAccountById(accountId);
-            return ResponseEntity.ok(ApiResponse.success("Account retrieved successfully", account));
+            AccountDTO accountDTO = accountService.convertToDTO(account);
+            return ResponseEntity.ok(ApiResponse.success("Account retrieved successfully", accountDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
     @GetMapping("/number/{accountNumber}")
-    public ResponseEntity<ApiResponse<Account>> getAccountByNumber(@PathVariable String accountNumber) {
+    public ResponseEntity<ApiResponse<AccountDTO>> getAccountByNumber(@PathVariable String accountNumber) {
         try {
             Account account = accountService.getAccountByNumber(accountNumber);
-            return ResponseEntity.ok(ApiResponse.success("Account retrieved successfully", account));
+            AccountDTO accountDTO = accountService.convertToDTO(account);
+            return ResponseEntity.ok(ApiResponse.success("Account retrieved successfully", accountDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -73,16 +76,16 @@ public class AccountController {
     }
 
     @GetMapping("/{accountId}/balance")
-    public ResponseEntity<ApiResponse<Account>> checkBalance(@PathVariable Long accountId) {
+    public ResponseEntity<ApiResponse<AccountDTO>> checkBalance(@PathVariable Long accountId) {
         try {
             Account account = accountService.getAccountById(accountId);
-            return ResponseEntity.ok(ApiResponse.success("Balance retrieved successfully", account));
+            AccountDTO accountDTO = accountService.convertToDTO(account);
+            return ResponseEntity.ok(ApiResponse.success("Balance retrieved successfully", accountDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
 
-    // New Delete Endpoint
     @DeleteMapping("/{accountId}")
     public ResponseEntity<ApiResponse<String>> deleteAccount(@PathVariable Long accountId) {
         try {
